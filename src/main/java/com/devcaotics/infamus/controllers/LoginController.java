@@ -13,28 +13,34 @@ import java.sql.SQLException;
 
 @Controller
 public class LoginController {
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "login"; // O nome do arquivo HTML de login deve ser "login.html"
+    }
+    @PostMapping("/login")
+    public String login(@RequestParam("email") String email,
+                        @RequestParam("senha") String senha,
+                        HttpSession session,
+                        RedirectAttributes redirectAttributes) throws SQLException {
+        // Buscar o professor no banco de dados usando o email
+        Professor professor = RepositoryFacade.getInstance().readProfessor(email);
 
-        @PostMapping("/login")
-        public String login(@RequestParam("email") String email, @RequestParam("senha") String senha,
-                            HttpSession session, RedirectAttributes redirectAttributes) throws SQLException {
+        // Verificar se o professor existe e se a senha está correta
+        if (professor != null && professor.getSenha().equals(senha)) {
+            // Armazenar o professor na sessão
+            session.setAttribute("professor", professor);
 
-            // Buscar o professor no banco de dados usando o email
-            Professor professor = RepositoryFacade.getInstance().readProfessor(email);
-
-            // Verificar se o professor existe e se a senha está correta
-            if (professor != null && professor.getSenha().equals(senha)) {
-                session.setAttribute("professor", professor);
-
-                // Redirecionar para a página inicial
-                return "redirect:/";
-            } else {
-                // Se o login falhar, adicionar uma mensagem de erro e redirecionar de volta ao login
-                redirectAttributes.addFlashAttribute("error", "Email ou senha inválidos");
-                return "redirect:/login";
-            }
+            // Redirecionar para a página inicial
+            return "redirect:/";
+        } else {
+            // Se o login falhar, adicionar uma mensagem de erro e redirecionar de volta ao login
+            redirectAttributes.addFlashAttribute("error", "Email ou senha inválidos");
+            return "redirect:/login";
         }
+    }
 
-        // Logout para encerrar a sessão
+
+    // Logout para encerrar a sessão
         @GetMapping("/logout")
         public String logout(HttpSession session) {
             session.invalidate();  // Invalida a sessão

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<title>Seus relatos</title>
 </head>
 <body>
 
 	<div th:insert="~{viewFragments :: menu}"></div>
 
-	<p class="h4" th:if="${relatos == null}">O estudante não está cadastrado</p>
+	<p class="h4" th:if="${relatos == null}">O estudante nÃ£o estÃ¡ cadastrado</p>
 	
 	<p class="h4" th:if="${relatos.size() == 0}">O bom estudante 
-	<i th:text="${estudante.nome}"></i> não possui relatos cadastrados</p>
+	<i th:text="${estudante.nome}"></i> nÃ£o possui relatos cadastrados</p>
 	
 	<p class="h4" th:if="${relatos.size() > 0}">O mau estudante <i th:text="${estudante.nome}"></i>
 		possui <span th:text="${relatos.size()}"></span> relatos</p>
@@ -63,7 +63,7 @@
 								<td><input type=text name="dataFormatada" th:placeholder="*{dataFormatada}" class="form-control" /></td>
 							</tr>
 							<tr>
-								<th>Descrição:</th>
+								<th>DescriÃ§Ã£o:</th>
 								<td><textarea type=text th:field="*{descricao}" class="form-control" ></textarea></td>
 							</tr>
 						</table>
@@ -95,7 +95,7 @@
 								<td><input type=text name="dataFormatada" th:placeholder="*{dataFormatada}" class="form-control" /></td>
 							</tr>
 							<tr>
-								<th>Descrição:</th>
+								<th>DescriÃ§Ã£o:</th>
 								<td><textarea type=text th:field="*{descricao}" class="form-control" ></textarea></td>
 							</tr>
 						</table>

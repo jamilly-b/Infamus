@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 
 </head>
 <body>
 
 	<div th:insert="~{viewFragments :: menu}"></div>
-
-	<button class="btn btn-success" data-bs-toggle="modal"
-		data-bs-target="#modalCadastro">cadastrar</button>
+	<div style="display: flex; align-items: center; justify-content: center; width: 100%;">
+		<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCadastro" style="margin: 10px 0px">Cadastrar Estudantes</button>
+	</div>
 	<div style="display: flex; flex-flow: row wrap; width: 100%">
 	
 		<div th:each="estudante : ${estudantes}" th:object="${estudante}" 
@@ -20,14 +20,14 @@
 			<div class="card">
 				<div class="card-header">
 					<p >
-						Nome do estudante: <i th:text="*{nome}"></i>
+						Nome do estudante: </b><i th:text="*{nome}" style="font-weight: bold"></i>
 					</p>
 				</div>
 				<div class="card-body">
 				
 					<table class="table">
 						<tr>
-							<th>Matrícula</th>
+							<th>MatrÃ­cula</th>
 							<th>Telefone</th>
 						</tr>
 						<tr>
@@ -43,7 +43,7 @@
 							<td><p th:text="*{anoEntrada}"></p></td>
 						</tr>
 						<tr>
-							<th colSpan="2">Endereço</th>
+							<th colSpan="2">EndereÃ§o</th>
 						</tr>
 						<tr>
 							<td colSpan="2"><p th:text="*{endereco}"></p> </td>
@@ -54,14 +54,13 @@
 				
 				</div>
 				<div class="card-footer">
-					<a href="#" th:href="@{/relatos/{codigo}(codigo=*{codigo})}" class="btn btn-danger">relatar</a>
+					<a href="#" th:href="@{/relatos/{codigo}(codigo=*{codigo})}" class="btn btn-danger">Relatar</a>
 				</div>
 			</div>
-
 		</div>
 	</div>
 
-
+	<!-- Modal de cadastro	/-->
 	<div class="modal fade" id="modalCadastro" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -88,8 +87,8 @@
 								<td><input type=text name="telefone" class="form-control" /></td>
 							</tr>
 							<tr>
-								<th>Endereço:</th>
-								<td><input type=text name="endereco1" class="form-control" /></td>
+								<th>EndereÃ§o:</th>
+								<td><input type=text name="endereco" class="form-control" /></td>
 							</tr>
 							<tr>
 								<th>e-mail:</th>

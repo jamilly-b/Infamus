@@ -70,5 +70,4 @@ public class RepositoryFacade {
 	public List<Relato> filterRelatoByEmailProfessor(String email) throws SQLException{
 		return ((RelatoRepository)this.rRelato).filterRelatoByEmailProfessor(email);
 	}
-
 }

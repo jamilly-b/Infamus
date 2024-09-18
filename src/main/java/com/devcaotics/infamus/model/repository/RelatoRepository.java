@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.devcaotics.infamus.model.entities.Estudante;
+import com.devcaotics.infamus.model.entities.Professor;
 import com.devcaotics.infamus.model.entities.Relato;
 
 public final class RelatoRepository implements Repository<Relato, Integer> {
@@ -115,6 +116,40 @@ public final class RelatoRepository implements Repository<Relato, Integer> {
 		}
 		return relatos;
 
+	}
+
+	public List<Relato> filterRelatoByEmailProfessor(String email) throws SQLException {
+		String sql = "select * from relato as r join professor as p on(r.codigo_fk_estudante = p.email_professor) where r.codigo_fk_professor = "
+				+ email;
+
+		ResultSet result = ConnectionManager.getCurrentConnection().prepareStatement(sql).executeQuery();
+
+		List<Relato> relatos = new ArrayList<Relato>();
+
+		Professor p = null;
+
+		while(result.next()) {
+
+			if(p == null) {
+				p = new Professor();
+
+				p.setNome(result.getString("nome_professor"));
+				p.setEmail(result.getString("email_professor"));
+				p.setSenha(result.getString("senha_professor"));
+			}
+
+			Relato r = new Relato();
+
+			r.setCodigo(result.getInt("codigo_relato"));
+			r.setData(new Date(result.getDate("data_relato").getTime()));
+			r.setDescricao(new String(result.getBytes("descricao")));
+
+			r.setProfessor(p);
+
+			relatos.add(r);
+		}
+
+		return relatos;
 	}
 	
 	public static void main(String args[]) {

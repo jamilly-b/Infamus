@@ -19,7 +19,7 @@ public class ProfessorRepository implements Repository<Professor, String>{
     @Override
     public void create(Professor professor) throws SQLException {
 
-        String sql = "insert into professor(nome, email, senha) values (?,?,?)";
+        String sql = "insert into professor(nome_professor, email_professor, senha_professor) values (?,?,?)";
 
         PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
 
@@ -32,7 +32,7 @@ public class ProfessorRepository implements Repository<Professor, String>{
 
     @Override
     public void update(Professor professor) throws SQLException {
-        String sql = "update professor set nome=?, email=?, senha=?";
+        String sql = "update professor set nome_professor=?, email_professor=?, senha_professor=?";
 
         PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
 
@@ -57,9 +57,9 @@ public class ProfessorRepository implements Repository<Professor, String>{
 
             Professor p =  new Professor();
 
-            p.setNome(result.getString("telefone_estudante"));
-            p.setEmail(result.getString("email_estudante"));
-            p.setSenha(result.getString("email_estudante"));
+            p.setNome(result.getString("nome_professor"));
+            p.setEmail(result.getString("email_professor"));
+            p.setSenha(result.getString("senha_professor"));
 
             return p;
         }
@@ -80,9 +80,9 @@ public class ProfessorRepository implements Repository<Professor, String>{
 
             Professor p =  new Professor();
 
-            p.setNome(result.getString("telefone_estudante"));
-            p.setEmail(result.getString("email_estudante"));
-            p.setSenha(result.getString("email_estudante"));
+            p.setNome(result.getString("nome_professor"));
+            p.setEmail(result.getString("email_professor"));
+            p.setSenha(result.getString("senha_professor"));
 
             professores.add(p);
         }

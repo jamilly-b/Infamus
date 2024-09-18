@@ -67,4 +67,8 @@ public class RepositoryFacade {
 		return ((RelatoRepository)this.rRelato).filterByCodigoEstudante(codigo);
 	}
 
+	public List<Relato> filterRelatoByEmailProfessor(String email) throws SQLException{
+		return ((RelatoRepository)this.rRelato).filterRelatoByEmailProfessor(email);
+	}
+
 }

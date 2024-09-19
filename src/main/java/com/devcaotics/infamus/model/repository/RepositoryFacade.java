@@ -45,6 +45,10 @@ public class RepositoryFacade {
 	public Professor readProfessor(Integer codigo) throws SQLException {
 		return this.rProfessor.read(codigo);
 	}
+
+	public Professor updateProfessor(Professor professor) throws SQLException {
+		return this.rProfessor.update(professor);
+	}
 	
 	public void createEstudante(Estudante estudante) throws SQLException {
 		rEstudante.create(estudante);

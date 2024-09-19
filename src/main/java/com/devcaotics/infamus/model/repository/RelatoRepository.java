@@ -34,9 +34,10 @@ public final class RelatoRepository implements Repository<Relato, Integer> {
 	}
 
 	@Override
-	public void update(Relato c) {
+	public Professor update(Relato c) {
 		// TODO Auto-generated method stub
 
+		return null;
 	}
 
 	@Override

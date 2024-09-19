@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.devcaotics.infamus.model.entities.Estudante;
+import com.devcaotics.infamus.model.entities.Professor;
 
 public final class EstudanteRepository implements Repository<Estudante, Integer>{
 
@@ -36,7 +37,7 @@ public final class EstudanteRepository implements Repository<Estudante, Integer>
 	}
 
 	@Override
-	public void update(Estudante c) throws SQLException {
+	public Professor update(Estudante c) throws SQLException {
 		// TODO Auto-generated method stub
 		
 		String sql = "update estudante set matricula_estudante=?,"
@@ -56,7 +57,8 @@ public final class EstudanteRepository implements Repository<Estudante, Integer>
 		pstm.setInt(7, c.getCodigo());
 		
 		pstm.executeUpdate();
-		
+
+		return null;
 	}
 
 	@Override

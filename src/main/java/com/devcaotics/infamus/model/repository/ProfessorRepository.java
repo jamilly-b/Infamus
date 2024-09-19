@@ -31,7 +31,7 @@ public class ProfessorRepository implements Repository<Professor, Integer> {
     }
 
     @Override
-    public void update(Professor professor) throws SQLException {
+    public Professor update(Professor professor) throws SQLException {
         String sql = "UPDATE professor SET nome_professor=?, email_professor=?, senha_professor=? WHERE codigo_professor=?";
         PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
 
@@ -41,6 +41,7 @@ public class ProfessorRepository implements Repository<Professor, Integer> {
         pstm.setInt(4, professor.getCodigo());
 
         pstm.executeUpdate();
+        return professor;
     }
 
     @Override

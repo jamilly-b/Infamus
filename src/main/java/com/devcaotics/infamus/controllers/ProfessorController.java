@@ -75,4 +75,24 @@ public class ProfessorController {
         return "redirect:/login";
     }
 
+    @PostMapping("/atualizarSenha")
+    public String atualizarProfessor (Model m, HttpServletRequest request, Professor p, HttpSession session) {
+        String novaSenha = request.getParameter("novaSenha");
+        
+        Professor professor = (Professor) session.getAttribute("professor");
+        if (professor == null) {
+            session.setAttribute("msg", "Professor não encontrado.");
+            return "redirect:/perfil";
+        }
+
+        professor.setSenha(novaSenha);
+        try {
+            RepositoryFacade.getInstance().updateProfessor(professor);
+            session.setAttribute("msg", "Senha atualizada com sucesso.");
+        } catch (SQLException e1) {
+            session.setAttribute("msg", "Erro ao atualizar a senha do professor.");
+        }
+
+        return "redirect:/perfil";
+    }
 }

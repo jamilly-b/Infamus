@@ -75,10 +75,13 @@ public class RelatorController {
 			Estudante e = RepositoryFacade.getInstance().readEstudante(codigo);
 			r.setEstudante(e);
 
+			Professor professor = (Professor) session.getAttribute("professor");
+			r.setProfessor(professor);
+
 			RepositoryFacade.getInstance().createRelato(r);
 			session.setAttribute("msg", "Relato cadastrado com sucesso!");
 
-			return viewRelatos(m, codigo, null); // O `redirectAttributes` é null aqui porque não será usado
+			return viewRelatos(m, codigo, null);
 		} catch (SQLException exp) {
 			session.setAttribute("msg", "Erro ao cadastrar o relato!");
 

@@ -22,13 +22,14 @@ public final class RelatoRepository implements Repository<Relato, Integer> {
 	public void create(Relato c) throws SQLException {
 		// TODO Auto-generated method stub
 
-		String sql = "insert into relato(data_relato, descricao, codigo_fk_estudante) values (?, ?, ?)";
+		String sql = "insert into relato(data_relato, descricao, codigo_fk_estudante, codigo_fk_professor) values (?, ?, ?, ?)";
 
 		PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
 
 		pstm.setDate(1, new java.sql.Date(c.getData().getTime()));
 		pstm.setBytes(2, c.getDescricao().getBytes());
 		pstm.setInt(3, c.getEstudante().getCodigo());
+		pstm.setInt(4, c.getProfessor().getCodigo());
 
 		pstm.execute();
 	}
@@ -151,6 +152,7 @@ public final class RelatoRepository implements Repository<Relato, Integer> {
 					p.setNome(result.getString("nome_professor"));
 					p.setEmail(result.getString("email_professor"));
 					p.setSenha(result.getString("senha_professor"));
+					p.setCodigo(result.getInt("codigo_professor"));
 				}
 
 				Relato r = new Relato();

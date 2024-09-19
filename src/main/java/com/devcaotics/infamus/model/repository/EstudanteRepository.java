@@ -136,9 +136,8 @@ public final class EstudanteRepository implements Repository<Estudante, Integer>
 	}
 
 	public static void main(String args[]) {
-		
+
 		Estudante e = new Estudante();
-		
 		e.setMatricula("2213312");
 		e.setNome("Ártico Pereira Asiático");
 		e.setAnoEntrada(2010);
@@ -146,13 +145,11 @@ public final class EstudanteRepository implements Repository<Estudante, Integer>
 		e.setTelefone("22133123");
 		e.setEndereco("rua capitão cabo sargento major, 23");
 		e.setCodigo(1);
-		
+
 		try {
 			new EstudanteRepository().create(e);
-			
 			//Estudante e = new EstudanteRepository().read(1);
 			//System.out.println(e.getNome());
-			
 			new EstudanteRepository().delete(1);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block

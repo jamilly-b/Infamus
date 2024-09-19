@@ -119,18 +119,22 @@ public final class RelatoRepository implements Repository<Relato, Integer> {
 	}
 
 	public List<Relato> filterRelatoByEmailProfessor(String email) throws SQLException {
-		String sql = "select * from relato as r join professor as p on(r.codigo_fk_estudante = p.email_professor) where r.codigo_fk_professor = "
-				+ email;
+		String sql = "SELECT r.*, p.* FROM relato AS r "
+				+ "JOIN professor AS p ON r.codigo_fk_professor = p.codigo_professor "
+				+ "WHERE p.email_professor = ?";
 
-		ResultSet result = ConnectionManager.getCurrentConnection().prepareStatement(sql).executeQuery();
+		PreparedStatement stmt = ConnectionManager.getCurrentConnection().prepareStatement(sql);
+		stmt.setString(1, email);
 
-		List<Relato> relatos = new ArrayList<Relato>();
+		ResultSet result = stmt.executeQuery();
+
+		List<Relato> relatos = new ArrayList<>();
 
 		Professor p = null;
 
-		while(result.next()) {
+		while (result.next()) {
 
-			if(p == null) {
+			if (p == null) {
 				p = new Professor();
 
 				p.setNome(result.getString("nome_professor"));
@@ -141,9 +145,8 @@ public final class RelatoRepository implements Repository<Relato, Integer> {
 			Relato r = new Relato();
 
 			r.setCodigo(result.getInt("codigo_relato"));
-			r.setData(new Date(result.getDate("data_relato").getTime()));
-			r.setDescricao(new String(result.getBytes("descricao")));
-
+			r.setData(result.getDate("data_relato"));
+			r.setDescricao(result.getString("descricao"));
 			r.setProfessor(p);
 
 			relatos.add(r);
@@ -151,7 +154,9 @@ public final class RelatoRepository implements Repository<Relato, Integer> {
 
 		return relatos;
 	}
-	
+
+
+
 	public static void main(String args[]) {
 		
 		Relato r = new Relato();

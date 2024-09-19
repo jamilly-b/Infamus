@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class LoginController {
     @GetMapping("/login")
     public String showLoginPage() {
-        return "login"; // O nome do arquivo HTML de login deve ser "login.html"
+        return "login";
     }
     @PostMapping("/login")
     public String login(@RequestParam("email") String email,

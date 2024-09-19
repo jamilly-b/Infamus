@@ -44,28 +44,25 @@ public class ProfessorRepository implements Repository<Professor, String>{
     }
 
     @Override
-    public Professor read(String k) throws SQLException {
-        String sql = "select * from professor where email = ?";
+    public Professor read(String email) throws SQLException {
+        String sql = "SELECT * FROM professor WHERE email_professor = ?";
 
-        PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
+        PreparedStatement stmt = ConnectionManager.getCurrentConnection().prepareStatement(sql);
+        stmt.setString(1, email);
 
-        pstm.setString(1, k);
+        ResultSet result = stmt.executeQuery();
 
-        ResultSet result = pstm.executeQuery();
-
-        if(result.next()) {
-
-            Professor p =  new Professor();
-
-            p.setNome(result.getString("nome_professor"));
-            p.setEmail(result.getString("email_professor"));
-            p.setSenha(result.getString("senha_professor"));
-
-            return p;
+        if (result.next()) {
+            Professor professor = new Professor();
+            professor.setNome(result.getString("nome_professor"));
+            professor.setEmail(result.getString("email_professor"));
+            professor.setSenha(result.getString("senha_professor"));
+            return professor;
         }
 
         return null;
     }
+
 
     public List<Professor> readAll() throws SQLException{
         String sql = "select * from professor";

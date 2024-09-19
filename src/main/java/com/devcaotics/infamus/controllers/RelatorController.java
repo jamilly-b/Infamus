@@ -31,7 +31,7 @@ public class RelatorController {
 	public String viewRelatos(Model m, @PathVariable("codigoEstudante") int codigo, RedirectAttributes redirectAttributes) {
 		Professor professor = (Professor) session.getAttribute("professor");
 		if (professor == null) {
-			redirectAttributes.addFlashAttribute("erroRelato", "Você precisa estar logado para visualizar os relatos.");
+			redirectAttributes.addFlashAttribute("erroRelato", "Você precisa estar logado para visualizar os relatos ou relatar um estudante.");
 			return "redirect:/login";
 		}
 
@@ -52,18 +52,17 @@ public class RelatorController {
 		}
 	}
 
-	@RequestMapping({"/professor"})
-	public String relatosProfessor(Model m, RedirectAttributes redirectAttributes) throws SQLException {
+	@RequestMapping({"/relatos/*"})
+	public String relato(Model m, HttpSession session, RedirectAttributes redirectAttributes) throws SQLException {
 		// Verifica se o professor está logado
 		Professor professor = (Professor) session.getAttribute("professor");
 
-		// Se o professor não está logado, redireciona para a página de login
 		if (professor == null) {
 			redirectAttributes.addFlashAttribute("erroRelato", "Você precisa estar logado para visualizar os relatos.");
 			return "redirect:/login";
 		}
 
-		// Caso contrário, carrega a lista de estudantes e exibe
+		// Carrega os relatos do professor logado
 		List<Relato> relatos = RepositoryFacade.getInstance().filterRelatoByEmailProfessor(professor.getEmail());
 		m.addAttribute("relatos", relatos);
 

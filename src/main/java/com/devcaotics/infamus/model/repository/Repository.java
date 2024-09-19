@@ -8,5 +8,6 @@ public interface Repository <C, KEY>{
 	public void update(C c) throws SQLException;
 	public C read(KEY k) throws SQLException;
 	public void delete(KEY k) throws SQLException;
-	
+
+	C readByEmail(String email) throws SQLException;
 }

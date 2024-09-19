@@ -15,14 +15,14 @@ public class RepositoryFacade {
 	private Repository<Estudante, Integer> rEstudante;
 	private Repository<Relato, Integer> rRelato;
 
-	private Repository<Professor, String> rProfessor;
+	private Repository<Professor, Integer> rProfessor;
 	
 	private RepositoryFacade() {
 		
 		rEstudante = new EstudanteRepository();
 		rRelato = new RelatoRepository();
 		rProfessor = new ProfessorRepository();
-		
+
 	}
 	
 	public static RepositoryFacade getInstance() {
@@ -38,8 +38,12 @@ public class RepositoryFacade {
 		return this.rEstudante.read(codigo);
 	}
 
-	public Professor readProfessor(String email) throws SQLException {
-		return this.rProfessor.read(email);
+	public Professor readProfessorEmail(String email) throws SQLException {
+		return this.rProfessor.readByEmail(email);
+	}
+
+	public Professor readProfessor(Integer codigo) throws SQLException {
+		return this.rProfessor.read(codigo);
 	}
 	
 	public void createEstudante(Estudante estudante) throws SQLException {
@@ -62,12 +66,12 @@ public class RepositoryFacade {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	public List<Relato> filterRelatoByCodigoEstudante(int codigo) throws SQLException{
 		return ((RelatoRepository)this.rRelato).filterByCodigoEstudante(codigo);
 	}
 
-	public List<Relato> filterRelatoByEmailProfessor(String email) throws SQLException{
-		return ((RelatoRepository)this.rRelato).filterRelatoByEmailProfessor(email);
+	public List<Relato> filterByCodigoProfessor(int codigo) throws SQLException{
+		return ((RelatoRepository)this.rRelato).filterByCodigoProfessor(codigo);
 	}
 }

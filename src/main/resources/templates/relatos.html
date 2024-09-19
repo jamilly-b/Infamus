@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <title>Seus relatos</title>
 </head>
-<body>
+<body style="padding: 20px">
 
 	<div th:insert="~{viewFragments :: menu}"></div>
 
 	<p class="h4" th:if="${relatos == null}">O estudante não está cadastrado</p>
 	
-	<p class="h4" th:if="${relatos.size() == 0}">O bom estudante 
+	<p class="h4" th:if="${relatos.size() == 0}" >O bom estudante
 	<i th:text="${estudante.nome}"></i> não possui relatos cadastrados</p>
 	
 	<p class="h4" th:if="${relatos.size() > 0}">O mau estudante <i th:text="${estudante.nome}"></i>
 		possui <span th:text="${relatos.size()}"></span> relatos</p>
 	
 	<button class="btn btn-primary" data-bs-toggle="modal"
-		data-bs-target="#modalCadastro">inserir novo relato</button>
+		data-bs-target="#modalCadastro" style="margin: 20px" >inserir novo relato</button>
 		
 	<button class="btn btn-primary" data-bs-toggle="modal"
 		data-bs-target="#modalCadastro2">inserir novo relato 2</button>
@@ -26,7 +26,7 @@
 			
 			<div th:each="relato: ${relatos}">
 			
-				<div class="card">
+				<div class="card" style="margin: 20px">
 					<div class="card-header">
 						Data do Relato: <span th:text="${relato.dataFormatada}"></span>
 					</div>

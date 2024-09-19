@@ -1,6 +1,5 @@
 package com.devcaotics.infamus.model.repository;
 
-import com.devcaotics.infamus.model.entities.Estudante;
 import com.devcaotics.infamus.model.entities.Professor;
 
 import java.sql.PreparedStatement;
@@ -9,44 +8,63 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfessorRepository implements Repository<Professor, String>{
+public class ProfessorRepository implements Repository<Professor, Integer> {
 
-
-    protected ProfessorRepository() {
-
-    }
+    protected ProfessorRepository() {}
 
     @Override
     public void create(Professor professor) throws SQLException {
-
-        String sql = "insert into professor(nome_professor, email_professor, senha_professor) values (?,?,?)";
-
-        PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
-
-        pstm.setString(1, professor.getNome());
-        pstm.setString(2, professor.getEmail());
-        pstm.setString(3, professor.getSenha());
-
-        pstm.execute();
-    }
-
-    @Override
-    public void update(Professor professor) throws SQLException {
-        String sql = "update professor set nome_professor=?, email_professor=?, senha_professor=?";
-
-        PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
+        String sql = "INSERT INTO professor(nome_professor, email_professor, senha_professor) VALUES (?,?,?)";
+        PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
         pstm.setString(1, professor.getNome());
         pstm.setString(2, professor.getEmail());
         pstm.setString(3, professor.getSenha());
 
         pstm.executeUpdate();
+
+        // Obter o código gerado
+        ResultSet generatedKeys = pstm.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            professor.setCodigo(generatedKeys.getInt(1));
+        }
     }
 
     @Override
-    public Professor read(String email) throws SQLException {
-        String sql = "SELECT * FROM professor WHERE email_professor = ?";
+    public void update(Professor professor) throws SQLException {
+        String sql = "UPDATE professor SET nome_professor=?, email_professor=?, senha_professor=? WHERE codigo_professor=?";
+        PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
 
+        pstm.setString(1, professor.getNome());
+        pstm.setString(2, professor.getEmail());
+        pstm.setString(3, professor.getSenha());
+        pstm.setInt(4, professor.getCodigo());
+
+        pstm.executeUpdate();
+    }
+
+    @Override
+    public Professor read(Integer codigo) throws SQLException {
+        String sql = "SELECT * FROM professor WHERE codigo_professor = ?";
+        PreparedStatement stmt = ConnectionManager.getCurrentConnection().prepareStatement(sql);
+        stmt.setInt(1, codigo);
+
+        ResultSet result = stmt.executeQuery();
+
+        if (result.next()) {
+            Professor professor = new Professor();
+            professor.setCodigo(result.getInt("codigo_professor"));
+            professor.setNome(result.getString("nome_professor"));
+            professor.setEmail(result.getString("email_professor"));
+            professor.setSenha(result.getString("senha_professor"));
+            return professor;
+        }
+
+        return null;
+    }
+
+    public Professor readByEmail(String email) throws SQLException {
+        String sql = "SELECT * FROM professor WHERE email_professor = ?";
         PreparedStatement stmt = ConnectionManager.getCurrentConnection().prepareStatement(sql);
         stmt.setString(1, email);
 
@@ -54,6 +72,7 @@ public class ProfessorRepository implements Repository<Professor, String>{
 
         if (result.next()) {
             Professor professor = new Professor();
+            professor.setCodigo(result.getInt("codigo_professor"));
             professor.setNome(result.getString("nome_professor"));
             professor.setEmail(result.getString("email_professor"));
             professor.setSenha(result.getString("senha_professor"));
@@ -64,23 +83,18 @@ public class ProfessorRepository implements Repository<Professor, String>{
     }
 
 
-    public List<Professor> readAll() throws SQLException{
-        String sql = "select * from professor";
-
+    public List<Professor> readAll() throws SQLException {
+        String sql = "SELECT * FROM professor";
         PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
-
         List<Professor> professores = new ArrayList<>();
 
         ResultSet result = pstm.executeQuery();
-
-        while(result.next()) {
-
-            Professor p =  new Professor();
-
+        while (result.next()) {
+            Professor p = new Professor();
+            p.setCodigo(result.getInt("codigo_professor"));
             p.setNome(result.getString("nome_professor"));
             p.setEmail(result.getString("email_professor"));
             p.setSenha(result.getString("senha_professor"));
-
             professores.add(p);
         }
 
@@ -88,36 +102,26 @@ public class ProfessorRepository implements Repository<Professor, String>{
     }
 
     @Override
-    public void delete(String k) throws SQLException {
-        String sql = "delete from professor where professor = "+k;
-
-        ConnectionManager.getCurrentConnection().prepareStatement(sql).execute();
+    public void delete(Integer codigo) throws SQLException {
+        String sql = "DELETE FROM professor WHERE codigo_professor = ?";
+        PreparedStatement pstm = ConnectionManager.getCurrentConnection().prepareStatement(sql);
+        pstm.setInt(1, codigo);
+        pstm.executeUpdate();
     }
 
-
-
-
-    public static void main(String args[]) {
-
+    public static void main(String[] args) {
         Professor p = new Professor();
-
         p.setNome("Ártico Pereira Asiático");
         p.setEmail("americo_aziatico@gmail.com");
         p.setSenha("123");
 
-
         try {
-            new ProfessorRepository().create(p);
-
-            //Professor p = new ProfessorRepository().read("americo_aziatico@gmail.com");
-            //System.out.println(p.getNome());
-
-            new ProfessorRepository().delete("americo_aziatico@gmail.com");
-        } catch (SQLException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+            ProfessorRepository repo = new ProfessorRepository();
+            repo.create(p);
+            System.out.println("Professor cadastrado: " + p.getNome() + " com código: " + p.getCodigo());
+            repo.delete(p.getCodigo());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
     }
-
 }

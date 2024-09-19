@@ -23,7 +23,7 @@ public class LoginController {
                         HttpSession session,
                         RedirectAttributes redirectAttributes) throws SQLException {
         // Buscar o professor no banco de dados usando o email
-        Professor professor = RepositoryFacade.getInstance().readProfessor(email);
+        Professor professor = RepositoryFacade.getInstance().readProfessorEmail(email);
 
         // Verificar se o professor existe e se a senha está correta
         if (professor != null && professor.getSenha().equals(senha)) {

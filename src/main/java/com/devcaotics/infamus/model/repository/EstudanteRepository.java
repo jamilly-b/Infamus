@@ -127,7 +127,12 @@ public final class EstudanteRepository implements Repository<Estudante, Integer>
 		ConnectionManager.getCurrentConnection().prepareStatement(sql).execute();
 		
 	}
-	
+
+	@Override
+	public Estudante readByEmail(String email) throws SQLException {
+		return null;
+	}
+
 	public static void main(String args[]) {
 		
 		Estudante e = new Estudante();

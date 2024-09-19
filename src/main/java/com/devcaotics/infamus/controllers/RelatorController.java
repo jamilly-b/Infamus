@@ -63,7 +63,7 @@ public class RelatorController {
 		}
 
 		// Carrega os relatos do professor logado
-		List<Relato> relatos = RepositoryFacade.getInstance().filterRelatoByEmailProfessor(professor.getEmail());
+		List<Relato> relatos = RepositoryFacade.getInstance().filterByCodigoProfessor(professor.getCodigo());
 		m.addAttribute("relatos", relatos);
 
 		return "relatos";

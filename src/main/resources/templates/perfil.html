@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil do Professor</title>
+  <script>
+    function showPasswordEdit() {
+      document.getElementById("edit-password-form").style.display = "block";
+    }
+  </script>
+</head>
+<body>
+
+<div th:insert="~{viewFragments :: menu}"></div>
+
+<div style="display: flex; align-items: center; justify-content: center; margin-top: 20px;">
+  <div style="border: 1px solid lightgray; padding: 20px; border-radius: 10px;">
+    <p><strong>Nome:</strong> <span th:text="${professor.nome}"></span></p>
+    <p><strong>Email:</strong> <span th:text="${professor.email}"></span></p>
+    <p><strong>Senha:</strong> <span th:text="${professor.senha}"></span></p>
+
+    <a href="#" onclick="showPasswordEdit()">Editar senha</a>
+
+    <!-- Form de edição da senha -->
+    <div id="edit-password-form" style="display:none; margin-top: 20px;">
+      <form th:action="@{/professor/atualizarSenha}" method="post">
+        <div class="form-group">
+          <label for="new-password">Nova Senha:</label>
+          <input type="password" id="new-password" name="novaSenha" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Atualizar Senha</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

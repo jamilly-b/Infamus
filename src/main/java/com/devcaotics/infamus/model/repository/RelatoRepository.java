@@ -1,5 +1,6 @@
 package com.devcaotics.infamus.model.repository;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -78,6 +79,11 @@ public final class RelatoRepository implements Repository<Relato, Integer> {
 
 	}
 
+	@Override
+	public Relato readByEmail(String email) throws SQLException {
+		return null;
+	}
+
 	public List<Relato> filterByCodigoEstudante(int codigoEstudante) throws SQLException {
 
 		String sql = "select * from relato as r join estudante as e on(r.codigo_fk_estudante = e.codigo_estudante) where r.codigo_fk_estudante = "
@@ -118,13 +124,13 @@ public final class RelatoRepository implements Repository<Relato, Integer> {
 
 	}
 
-	public List<Relato> filterRelatoByEmailProfessor(String email) throws SQLException {
-		String sql = "SELECT r.*, p.* FROM relato AS r "
-				+ "JOIN professor AS p ON r.codigo_fk_professor = p.codigo_professor "
-				+ "WHERE p.email_professor = ?";
+	public List<Relato> filterByCodigoProfessor(int codigoProfessor) throws SQLException {
 
-		PreparedStatement stmt = ConnectionManager.getCurrentConnection().prepareStatement(sql);
-		stmt.setString(1, email);
+		String sql = "SELECT * FROM relato AS r JOIN professor AS p ON r.codigo_fk_professor = p.codigo_professor WHERE r.codigo_fk_professor = ?";
+
+		Connection conn = ConnectionManager.getCurrentConnection();
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, codigoProfessor);
 
 		ResultSet result = stmt.executeQuery();
 
@@ -132,28 +138,33 @@ public final class RelatoRepository implements Repository<Relato, Integer> {
 
 		Professor p = null;
 
-		while (result.next()) {
+		// Adicionar uma verificação para garantir que a consulta está retornando algo
+		if (!result.isBeforeFirst()) {
+			System.out.println("Nenhum relato encontrado para o professor com código: " + codigoProfessor);
+		} else {
+			while (result.next()) {
+				System.out.println("Entrou no while");  // Para verificar se o loop está sendo executado
 
-			if (p == null) {
-				p = new Professor();
+				if (p == null) {
+					p = new Professor();
+					p.setNome(result.getString("nome_professor"));
+					p.setEmail(result.getString("email_professor"));
+					p.setSenha(result.getString("senha_professor"));
+				}
 
-				p.setNome(result.getString("nome_professor"));
-				p.setEmail(result.getString("email_professor"));
-				p.setSenha(result.getString("senha_professor"));
+				Relato r = new Relato();
+				r.setCodigo(result.getInt("codigo_relato"));
+				r.setData(new Date(result.getDate("data_relato").getTime()));
+				r.setDescricao(result.getString("descricao"));
+				r.setProfessor(p);
+
+				relatos.add(r);
 			}
-
-			Relato r = new Relato();
-
-			r.setCodigo(result.getInt("codigo_relato"));
-			r.setData(result.getDate("data_relato"));
-			r.setDescricao(result.getString("descricao"));
-			r.setProfessor(p);
-
-			relatos.add(r);
 		}
 
 		return relatos;
 	}
+
 
 
 

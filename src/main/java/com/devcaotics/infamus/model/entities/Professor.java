@@ -1,6 +1,7 @@
 package com.devcaotics.infamus.model.entities;
 
 public class Professor {
+    private int codigo;
     private String nome;
     private String email;
     private String senha;
@@ -27,5 +28,13 @@ public class Professor {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 }

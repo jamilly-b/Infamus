@@ -5,9 +5,12 @@
 <title>Insert title here</title>
 
 </head>
-<body>
+<body style="margin: 20px">
 
 	<div th:insert="~{viewFragments :: menu}"></div>
+	<div th:if="${msg}" style="color: green;">
+		<p th:text="${msg}"></p>
+	</div>
 	<div style="display: flex; align-items: center; justify-content: center; width: 100%;">
 		<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCadastro" style="margin: 10px 0px">Cadastrar Estudantes</button>
 	</div>

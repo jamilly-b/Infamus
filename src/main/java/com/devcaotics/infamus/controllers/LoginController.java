@@ -42,9 +42,10 @@ public class LoginController {
 
     // Logout para encerrar a sessão
         @GetMapping("/logout")
-        public String logout(HttpSession session) {
-            session.invalidate();  // Invalida a sessão
-            return "redirect:/login";  // Redireciona para a página de login
+        public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
+            redirectAttributes.addFlashAttribute("msg", "Você foi desconectado com sucesso.");
+            session.invalidate();
+            return "redirect:/";
         }
 
 }

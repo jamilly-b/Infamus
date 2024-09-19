@@ -78,7 +78,7 @@ public class ProfessorController {
     @PostMapping("/atualizarSenha")
     public String atualizarProfessor (Model m, HttpServletRequest request, Professor p, HttpSession session) {
         String novaSenha = request.getParameter("novaSenha");
-        
+
         Professor professor = (Professor) session.getAttribute("professor");
         if (professor == null) {
             session.setAttribute("msg", "Professor não encontrado.");

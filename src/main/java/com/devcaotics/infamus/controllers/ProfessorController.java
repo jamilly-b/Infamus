@@ -24,6 +24,19 @@ public class ProfessorController {
         return "cadastro";
     }
 
+    @GetMapping("/perfil")
+    public String exibirPerfil(Model m, HttpSession session, RedirectAttributes redirectAttributes){
+        Professor professor = (Professor) session.getAttribute("professor");
+        if (professor == null) {
+            redirectAttributes.addFlashAttribute("erroRelato", "Você precisa estar logado para visualizar o seu perfil.");
+            return "redirect:/login";
+        } else {
+            System.out.println("Professor logado: " + professor.getNome() + " codigo: " + professor.getCodigo());
+        }
+        m.addAttribute("professor", professor);
+        return "perfil";
+    }
+
     @GetMapping("/relatos")
     public String relato(Model m, HttpSession session, RedirectAttributes redirectAttributes) throws SQLException {
         // Verifica se o professor está logado
